@@ -13,26 +13,33 @@ class NewsTableViewCell: UITableViewCell {
     
     private var title: UILabel = {
         var title = UILabel()
+        title.numberOfLines = 0
         title.lineBreakMode = .byWordWrapping
-        title.numberOfLines = 3
+        title.textAlignment = .justified
+        title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.contentView.addSubview(title)
+        contentView.addSubview(title)
+        titleConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        title.frame = CGRect(x: 0, y: 0, width: contentView.frame.size.width - 10, height: contentView.frame.size.height - 10)
-        title.center = contentView.center
+    func titleConstraints() {
+        NSLayoutConstraint.activate([
+            title.layoutMarginsGuide.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            title.layoutMarginsGuide.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            title.layoutMarginsGuide.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            title.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
+        ])
     }
     
-    func setTitle(_ title: String) {
+    func configureCell(with title: String) {
         self.title.text = title
     }
 
