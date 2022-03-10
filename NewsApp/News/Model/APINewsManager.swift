@@ -10,7 +10,7 @@ import Foundation
 final class APINewsManager: APIManager {
     var sessionConfiguration: URLSessionConfiguration
     var session: URLSession
-    var url = URL(string: "https://newsapi.org/v2/everything?q=tesla&from=2022-02-09&sortBy=publishedAt&apiKey=00918c3d3188418eb025b1318a41d30c")
+    var url = URL(string: "https://newsapi.org/v2/everything?q=tesla&from=2022-02-10&sortBy=publishedAt&apiKey=00918c3d3188418eb025b1318a41d30c")
     
     init() {
         sessionConfiguration = URLSessionConfiguration.default

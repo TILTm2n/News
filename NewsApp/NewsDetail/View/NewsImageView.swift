@@ -16,7 +16,7 @@ class NewsImageView: UIImageView {
     convenience init() {
         self.init(frame: .zero)
         //image = UIImage(named: "newsIcon")
-        contentMode = .scaleAspectFill
+        contentMode = .scaleAspectFit
         translatesAutoresizingMaskIntoConstraints = false
     }
     

@@ -28,6 +28,7 @@ class NewsDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        newsImage.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
         view.backgroundColor = .green
         view.addSubview(authorLabel)
         view.addSubview(newsImage)
@@ -35,10 +36,9 @@ class NewsDetailViewController: UIViewController {
         view.addSubview(contentLabel)
         
         newsImage.addSubview(myActivityIndicator)
-        myActivityIndicator.frame = CGRect(x: 0, y: 0, width: 46, height: 46)
+        myActivityIndicator.frame = CGRect(x: newsImage.frame.size.width/2, y: newsImage.frame.size.height/2, width: 100, height: 100)
         myActivityIndicator.color = .blue
         myActivityIndicator.hidesWhenStopped = true
-        myActivityIndicator.center = newsImage.center
         myActivityIndicator.startAnimating()
         
         updateUI()
@@ -53,26 +53,27 @@ class NewsDetailViewController: UIViewController {
     }
     
     func fetchImage() {
-        //let queue = DispatchQueue.global(qos: .utility)
-//        queue.async {
-//            guard let url = URL(string: "\(self.article.urlToImage)") else {
-//                return
-//            }
-//            do {
-//                let image = try Data(contentsOf: url)
-//                DispatchQueue.main.async {
-//                    self.newsImage.image = UIImage(data: image)
-//                }
-//            } catch let error {
-//                print("\(error)")
-//            }
-//        }
+        
+        guard let path = article.urlToImage, let url = URL(string: path) else {
+            return
+        }
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.newsImage.image = image
+                        self?.myActivityIndicator.stopAnimating()
+                    }
+                }
+            }
+        }
     }
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            newsImage.heightAnchor.constraint(equalToConstant: 200),
-            newsImage.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+            //newsImage.heightAnchor.constraint(equalToConstant: 200),
+            //newsImage.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             newsImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             newsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
         ])
@@ -93,6 +94,11 @@ class NewsDetailViewController: UIViewController {
             contentLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             contentLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+        ])
+        
+        NSLayoutConstraint.activate([
+            myActivityIndicator.centerXAnchor.constraint(equalTo: newsImage.centerXAnchor),
+            myActivityIndicator.centerYAnchor.constraint(equalTo: newsImage.centerYAnchor),
         ])
     }
 }
