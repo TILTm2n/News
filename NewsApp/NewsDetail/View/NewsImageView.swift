@@ -1,22 +1,21 @@
 //
-//  NewsImageView.swift
+//  SelfSizingImageView.swift
 //  NewsPosts
 //
-//  Created by Eugene on 08.03.2022.
+//  Created by Eugene on 12.03.2022.
 //
 
 import UIKit
 
 class NewsImageView: UIImageView {
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
     convenience init() {
         self.init(frame: .zero)
-        //image = UIImage(named: "newsIcon")
-        contentMode = .scaleAspectFill
+        //contentMode = .scaleAspectFill
         translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -24,4 +23,19 @@ class NewsImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override var intrinsicContentSize: CGSize {
+        
+        if let myImage = self.image {
+            let myImageWidth = myImage.size.width
+            let myImageHeight = myImage.size.height
+            let myViewWidth = self.frame.size.width
+            
+            let ratio = myViewWidth/myImageWidth
+            let scaledHeight = myImageHeight * ratio
+            
+            return CGSize(width: myViewWidth, height: scaledHeight)
+        }
+        
+        return CGSize(width: -1.0, height: -1.0)
+    }
 }
