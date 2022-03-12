@@ -30,16 +30,16 @@ class NewsDetailViewController: UIViewController {
         super.viewDidLoad()
         newsImage.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
         view.backgroundColor = .green
-        view.addSubview(authorLabel)
         view.addSubview(newsImage)
         view.addSubview(titleLabel)
+        view.addSubview(authorLabel)
         view.addSubview(contentLabel)
         
         newsImage.addSubview(myActivityIndicator)
-        myActivityIndicator.frame = CGRect(x: newsImage.frame.size.width/2, y: newsImage.frame.size.height/2, width: 100, height: 100)
         myActivityIndicator.color = .blue
-        myActivityIndicator.hidesWhenStopped = true
         myActivityIndicator.startAnimating()
+        myActivityIndicator.hidesWhenStopped = true
+        myActivityIndicator.frame = CGRect(x: newsImage.frame.size.width/2, y: newsImage.frame.size.height/2, width: 100, height: 100)
         
         updateUI()
         setConstraints()
@@ -72,10 +72,8 @@ class NewsDetailViewController: UIViewController {
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            //newsImage.heightAnchor.constraint(equalToConstant: 200),
-            //newsImage.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
-            newsImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             newsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            newsImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
         ])
         
         NSLayoutConstraint.activate([
