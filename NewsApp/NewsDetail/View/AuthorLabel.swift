@@ -22,6 +22,6 @@ class AuthorLabel: UILabel {
     }
     
     func setAuthor(with author: String) {
-        text = "Author: \(author)"
+        text = author
     }
 }

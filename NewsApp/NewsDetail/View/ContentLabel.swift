@@ -21,7 +21,7 @@ class ContentLabel: UILabel {
     }
     
     func setContent(with content: String) {
-        text = "Content: \(content)"
+        text = content
     }
 
 }

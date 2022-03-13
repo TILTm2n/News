@@ -21,7 +21,7 @@ class TitleLabel: UILabel {
     }
     
     func setTitle(with title: String) {
-        text = "Title: \(title)"
+        text = title
     }
     
 }

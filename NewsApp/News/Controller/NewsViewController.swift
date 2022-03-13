@@ -64,6 +64,7 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
             switch result {
             case .Success(let news):
                 self.NewsData = news
+                print("count ---------------------> \(news.articles.count)")
                 DispatchQueue.main.async {
                     self.newsTableView.reloadData()
                 }
@@ -83,7 +84,10 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
 extension NewsViewController {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        guard let news = NewsData else {
+            return 0
+        }
+        return news.articles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

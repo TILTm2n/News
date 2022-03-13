@@ -10,10 +10,11 @@ import UIKit
 class NewsDetailViewController: UIViewController {
 
     var article: Article
-    var newsImage = NewsImageView()
-    var authorLabel = AuthorLabel()
     var titleLabel = TitleLabel()
+    var authorLabel = AuthorLabel()
+    var newsImage = NewsImageView()
     var contentLabel = ContentLabel()
+    var contentStackView = UIStackView()
     
     let myActivityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
@@ -71,27 +72,28 @@ class NewsDetailViewController: UIViewController {
     }
     
     func setConstraints() {
+        
         NSLayoutConstraint.activate([
             newsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             newsImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
         ])
         
         NSLayoutConstraint.activate([
-            authorLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+            authorLabel.widthAnchor.constraint(equalToConstant: view.safeAreaLayoutGuide.layoutFrame.width - 30),
             authorLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            authorLabel.topAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: 40),
+            authorLabel.topAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: 20),
         ])
         
         NSLayoutConstraint.activate([
-            titleLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: view.safeAreaLayoutGuide.layoutFrame.width - 30),
             titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 40),
+            titleLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 20),
         ])
         
         NSLayoutConstraint.activate([
-            contentLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+            contentLabel.widthAnchor.constraint(equalToConstant: view.safeAreaLayoutGuide.layoutFrame.width - 30),
             contentLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
         ])
         
         NSLayoutConstraint.activate([

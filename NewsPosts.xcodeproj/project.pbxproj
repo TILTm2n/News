@@ -155,8 +155,8 @@
 		A3B0C53D27CEA07500808A8F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A3EBDF3227D73A3B0003F884 /* AuthorLabel.swift */,
 				A3EF86F027D7D4D80036462A /* TitleLabel.swift */,
+				A3EBDF3227D73A3B0003F884 /* AuthorLabel.swift */,
 				A3EF86F227D7D4EC0036462A /* ContentLabel.swift */,
 				A3D6E59727DCCF55003759D0 /* NewsImageView.swift */,
 			);
