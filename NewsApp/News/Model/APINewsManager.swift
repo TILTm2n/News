@@ -9,11 +9,12 @@ import Foundation
 
 final class APINewsManager: APIManager {
     var sessionConfiguration: URLSessionConfiguration
-    var session: URLSession
+    lazy var session: URLSession = {
+        return URLSession(configuration: self.sessionConfiguration)
+    }()
     var url: URL
-    var apiKey: String
     
-    init() {
+    init(key: String, page: Int) {
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -22,9 +23,7 @@ final class APINewsManager: APIManager {
         let strDate = dateFormatter.string(from: date)
         
         sessionConfiguration = URLSessionConfiguration.default
-        session = URLSession(configuration: sessionConfiguration)
-        apiKey = "00918c3d3188418eb025b1318a41d30c"
-        url = URL(string: "https://newsapi.org/v2/everything?q=tesla&from=\(strDate)&sortBy=publishedAt&pageSize=100&apiKey=\(apiKey)")!
+        url = URL(string: "https://newsapi.org/v2/everything?q=tesla&from=\(strDate)&sortBy=publishedAt&pageSize=20&page=\(page)&apiKey=\(key)")!
     }
     
     func FetchFreshNews(completionHandler: @escaping ((APIResult<News>) -> Void)) {

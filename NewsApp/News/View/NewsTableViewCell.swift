@@ -13,6 +13,7 @@ class NewsTableViewCell: UITableViewCell {
     
     private var title: UILabel = {
         var title = UILabel()
+        title.font = .systemFont(ofSize: 20, weight: .black)
         title.numberOfLines = 0
         title.lineBreakMode = .byWordWrapping
         title.textAlignment = .justified
@@ -20,9 +21,16 @@ class NewsTableViewCell: UITableViewCell {
         return title
     }()
     
+    private var amount: UILabel = {
+        var amount = UILabel()
+        amount.translatesAutoresizingMaskIntoConstraints = false
+        return amount
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(title)
+        contentView.addSubview(amount)
         titleConstraints()
     }
     
@@ -33,14 +41,22 @@ class NewsTableViewCell: UITableViewCell {
     func titleConstraints() {
         NSLayoutConstraint.activate([
             title.layoutMarginsGuide.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-            title.layoutMarginsGuide.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            title.layoutMarginsGuide.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            title.trailingAnchor.constraint(equalTo: amount.leadingAnchor, constant: -30),
             title.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            amount.layoutMarginsGuide.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            amount.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            amount.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
     }
     
-    func configureCell(with title: String) {
+    func configureCell(with title: String, amount: Int) {
         self.title.text = title
+        self.amount.text = "\(amount)"
     }
+    
 
 }

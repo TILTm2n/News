@@ -7,16 +7,29 @@
 
 import UIKit
 
+enum State: Int {
+    case active
+    case inactive
+}
+
 class NewsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var pageNumber = 2
+    var state: State = .active
+    var articles = [Article]()
     var newsTableView = NewsTableView()
-    var NewsData: News?
-    lazy var NewsManager = APINewsManager()
+    lazy var NewsManager = APINewsManager(key: "00918c3d3188418eb025b1318a41d30c", page: pageNumber)
     
     lazy var refreshControl : UIRefreshControl = {
         var refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor.red
         return refreshControl
+    }()
+    
+    lazy var spinner : UIActivityIndicatorView = {
+        var spinner = UIActivityIndicatorView(style: .medium)
+        spinner.frame = CGRect(x: 0, y: 0, width: 320, height: 44)
+        return spinner
     }()
     
     override func viewDidLoad() {
@@ -27,6 +40,17 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         refreshControl.addTarget(self, action: #selector(reloadAllDataByRefresh), for: .primaryActionTriggered)
         getFreshNews()
         configureNewsTable()
+        
+    }
+    
+    func enableInfiniteScrollUI() {
+        spinner.startAnimating()
+        newsTableView.tableFooterView = spinner
+    }
+
+    func disableInfiniteScrollUI() {
+        spinner.stopAnimating()
+        newsTableView.tableFooterView = nil
     }
     
     func configureNewsTable() {
@@ -63,10 +87,17 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.toggleActivityIndicator(on: false)
             switch result {
             case .Success(let news):
-                self.NewsData = news
-                print("count ---------------------> \(news.articles.count)")
+                //self.articles = news.articles
+                self.articles.append(contentsOf: news.articles)
                 DispatchQueue.main.async {
                     self.newsTableView.reloadData()
+                    if (self.pageNumber >= 5){
+                        self.state = .inactive
+                        self.disableInfiniteScrollUI()
+                    }
+                    if (self.state == .active) {
+                        self.pageNumber += 1
+                    }
                 }
             case.Failure(let error as NSError):
                 DispatchQueue.main.async {
@@ -84,28 +115,27 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
 extension NewsViewController {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let news = NewsData else {
-            return 0
+        return articles.count
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastElement = articles.count - 1
+        if (indexPath.row == lastElement && state == .active) {
+            enableInfiniteScrollUI()
+            getFreshNews()
         }
-        return news.articles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as! NewsTableViewCell
-        guard let news = NewsData else {
-            return cell
-        }
-
-        cell.configureCell(with: news.articles[indexPath.row].title ?? "no data" )
+        cell.configureCell(with: articles[indexPath.row].title ?? "no data", amount: indexPath.row )
+        print("\(indexPath.row) ----> \(articles[indexPath.row].title ?? "sosi")")
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let news = NewsData else {
-            return
-        }
-        let vc = NewsDetailViewController(article: news.articles[indexPath.row])
+        let vc = NewsDetailViewController(article: articles[indexPath.row])
         vc.modalPresentationStyle = .pageSheet
         self.present(vc, animated: true, completion: nil)
     }
