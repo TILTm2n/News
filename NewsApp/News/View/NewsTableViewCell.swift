@@ -13,7 +13,7 @@ class NewsTableViewCell: UITableViewCell {
     
     private var title: UILabel = {
         var title = UILabel()
-        title.font = .systemFont(ofSize: 20, weight: .black)
+        title.font = .systemFont(ofSize: 17, weight: .semibold)
         title.numberOfLines = 0
         title.lineBreakMode = .byWordWrapping
         title.textAlignment = .justified
@@ -42,14 +42,14 @@ class NewsTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             title.layoutMarginsGuide.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            title.trailingAnchor.constraint(equalTo: amount.leadingAnchor, constant: -30),
+            title.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -55),
             title.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
             amount.layoutMarginsGuide.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-            amount.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            amount.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
+            amount.layoutMarginsGuide.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            amount.layoutMarginsGuide.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
     }
     

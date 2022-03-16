@@ -1,18 +1,18 @@
 //
-//  AuthorLabel.swift
+//  URLToSource.swift
 //  NewsPosts
 //
-//  Created by Eugene on 08.03.2022.
+//  Created by Eugene on 16.03.2022.
 //
 
 import UIKit
 
-class AuthorLabel: UILabel {
+class URLToSource: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         numberOfLines = 0
-        font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        font = .systemFont(ofSize: 16)
         translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -20,7 +20,8 @@ class AuthorLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setAuthor(with author: String) {
-        text = author
+    func setURL(with url: String) {
+        text = url
     }
+
 }

@@ -20,6 +20,12 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
     var newsTableView = NewsTableView()
     lazy var NewsManager = APINewsManager(key: "00918c3d3188418eb025b1318a41d30c", page: pageNumber)
     
+    let flag: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        return view
+    }()
+    
     lazy var refreshControl : UIRefreshControl = {
         var refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor.red
@@ -36,6 +42,7 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         view.backgroundColor = .yellow
         view.addSubview(newsTableView)
+        view.addSubview(flag)
         newsTableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(reloadAllDataByRefresh), for: .primaryActionTriggered)
         getFreshNews()

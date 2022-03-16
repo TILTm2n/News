@@ -14,7 +14,7 @@ class NewsDetailViewController: UIViewController {
     var authorLabel = AuthorLabel()
     var newsImage = NewsImageView()
     var contentLabel = ContentLabel()
-    var contentStackView = UIStackView()
+    //var contentStackView = UIStackView()
     
     let myActivityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
@@ -30,11 +30,12 @@ class NewsDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         newsImage.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-        view.backgroundColor = .green
+        view.backgroundColor = .systemBlue
         view.addSubview(newsImage)
         view.addSubview(titleLabel)
         view.addSubview(authorLabel)
         view.addSubview(contentLabel)
+        //view.addSubview(textView)
         
         newsImage.addSubview(myActivityIndicator)
         myActivityIndicator.color = .blue
@@ -44,7 +45,17 @@ class NewsDetailViewController: UIViewController {
         
         updateUI()
         setConstraints()
+        
+        
+//        let attributedString = NSMutableAttributedString(string: "click to open news")
+//        attributedString.addAttribute(.link, value: "\(article.url)", range: NSRange(location: 1, length: 55))
+//        textView.attributedText = attributedString
     }
+    
+//    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+//        UIApplication.shared.openURL(URL)
+//        return false
+//    }
     
     func updateUI() {
         self.authorLabel.setAuthor(with: article.author ?? "")
