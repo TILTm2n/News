@@ -14,7 +14,7 @@ enum State: Int {
 
 class NewsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var pageNumber = 2
+    var pageNumber = 1
     var state: State = .active
     var articles = [Article]()
     var newsTableView = NewsTableView()

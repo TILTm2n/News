@@ -14,6 +14,9 @@ class NewsDetailViewController: UIViewController {
     var authorLabel = AuthorLabel()
     var newsImage = NewsImageView()
     var contentLabel = ContentLabel()
+    
+    var linkTextView = LinkTextView()
+    var attributedLabel = UILabel()
     //var contentStackView = UIStackView()
     
     let myActivityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
@@ -30,32 +33,36 @@ class NewsDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         newsImage.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-        view.backgroundColor = .systemBlue
+        linkTextView = LinkTextView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
+        myActivityIndicator.frame = CGRect(x: newsImage.frame.size.width/2, y: newsImage.frame.size.height/2, width: 100, height: 100)
+        linkTextView.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
         view.addSubview(newsImage)
         view.addSubview(titleLabel)
         view.addSubview(authorLabel)
         view.addSubview(contentLabel)
-        //view.addSubview(textView)
-        
+        view.addSubview(linkTextView)
         newsImage.addSubview(myActivityIndicator)
         myActivityIndicator.color = .blue
         myActivityIndicator.startAnimating()
         myActivityIndicator.hidesWhenStopped = true
-        myActivityIndicator.frame = CGRect(x: newsImage.frame.size.width/2, y: newsImage.frame.size.height/2, width: 100, height: 100)
-        
         updateUI()
+        createLink()
         setConstraints()
-        
-        
-//        let attributedString = NSMutableAttributedString(string: "click to open news")
-//        attributedString.addAttribute(.link, value: "\(article.url)", range: NSRange(location: 1, length: 55))
-//        textView.attributedText = attributedString
     }
     
-//    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-//        UIApplication.shared.openURL(URL)
-//        return false
-//    }
+    func createLink() {
+        let plainAttributedString = NSMutableAttributedString(string: "", attributes: nil)
+        let string = "A link to Post"
+        let attributedLinkString = NSMutableAttributedString(string: string, attributes:[NSAttributedString.Key.link: URL(string: "\(article.url)")!])
+        let fullAttributedString = NSMutableAttributedString()
+        fullAttributedString.append(plainAttributedString)
+        fullAttributedString.append(attributedLinkString)
+        attributedLabel.isUserInteractionEnabled = true
+        attributedLabel.attributedText = fullAttributedString
+        linkTextView.attributedText = fullAttributedString
+        linkTextView.font = .systemFont(ofSize: 16, weight: .bold)
+    }
     
     func updateUI() {
         self.authorLabel.setAuthor(with: article.author ?? "")
@@ -65,7 +72,6 @@ class NewsDetailViewController: UIViewController {
     }
     
     func fetchImage() {
-        
         guard let path = article.urlToImage, let url = URL(string: path) else {
             return
         }
@@ -105,6 +111,13 @@ class NewsDetailViewController: UIViewController {
             contentLabel.widthAnchor.constraint(equalToConstant: view.safeAreaLayoutGuide.layoutFrame.width - 30),
             contentLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            linkTextView.widthAnchor.constraint(equalToConstant: view.safeAreaLayoutGuide.layoutFrame.width - 30),
+            linkTextView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            linkTextView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 10),
+            linkTextView.heightAnchor.constraint(equalToConstant: 20),
         ])
         
         NSLayoutConstraint.activate([
