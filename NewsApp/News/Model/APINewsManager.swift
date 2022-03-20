@@ -21,7 +21,6 @@ final class APINewsManager: APIManager {
         dateFormatter.locale = Locale(identifier: "en_US")
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let strDate = dateFormatter.string(from: date)
-        
         sessionConfiguration = URLSessionConfiguration.default
         url = URL(string: "https://newsapi.org/v2/everything?q=tesla&from=\(strDate)&sortBy=publishedAt&pageSize=20&page=\(page)&apiKey=\(key)")!
     }

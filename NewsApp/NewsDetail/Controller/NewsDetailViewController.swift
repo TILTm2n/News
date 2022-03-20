@@ -14,11 +14,8 @@ class NewsDetailViewController: UIViewController {
     var authorLabel = AuthorLabel()
     var newsImage = NewsImageView()
     var contentLabel = ContentLabel()
-    
     var linkTextView = LinkTextView()
     var attributedLabel = UILabel()
-    //var contentStackView = UIStackView()
-    
     let myActivityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
     init(article: Article) {

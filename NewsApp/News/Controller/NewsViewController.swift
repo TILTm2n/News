@@ -47,7 +47,6 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         refreshControl.addTarget(self, action: #selector(reloadAllDataByRefresh), for: .primaryActionTriggered)
         getFreshNews()
         configureNewsTable()
-        
     }
     
     func enableInfiniteScrollUI() {
@@ -64,7 +63,6 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         newsTableView.delegate = self
         newsTableView.dataSource = self
         view.addSubview(newsTableView)
-        
         NSLayoutConstraint.activate([
             newsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             newsTableView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor),
@@ -136,7 +134,7 @@ extension NewsViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as! NewsTableViewCell
         cell.configureCell(with: articles[indexPath.row].title ?? "no data", amount: indexPath.row )
-        print("\(indexPath.row) ----> \(articles[indexPath.row].title ?? "sosi")")
+//        print("\(indexPath.row) ----> \(articles[indexPath.row].title ?? "")")
         return cell
     }
     
