@@ -45,6 +45,7 @@ class NewsTableViewCell: UITableViewCell {
             title.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -55),
             title.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
+        
         NSLayoutConstraint.activate([
             amount.layoutMarginsGuide.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             amount.layoutMarginsGuide.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
@@ -57,5 +58,4 @@ class NewsTableViewCell: UITableViewCell {
         self.amount.text = "\(amount)"
     }
     
-
 }

@@ -8,8 +8,8 @@
 import Foundation
 
 enum APIResult<News> {
-    case Success(News)
-    case Failure(Error)
+    case success(News)
+    case failure(Error)
 }
 
 protocol APIManager {
@@ -20,34 +20,26 @@ protocol APIManager {
     func FetchNews<News>(request: URLRequest, completion: @escaping (APIResult<News>) -> Void)
 }
 
-//default implementation
 extension APIManager {
     
     func JSONTaskWith(request: URLRequest, completion: @escaping (News?, HTTPURLResponse?, Error?) -> Void) -> URLSessionDataTask {
         let decoder = JSONDecoder()
         let dataTask = session.dataTask(with: request) { data, response, error in
-            //поверка наличия HTTPURLResponse
-            guard let HTTPResponse = response as? HTTPURLResponse else {
+            guard let HTTPResponse = response as? HTTPURLResponse, let data = data else {
                 completion(nil, nil, error)
                 return
             }
             
-            if data == nil {
-                if let error = error {
+            switch HTTPResponse.statusCode {
+            case 200:
+                do {
+                    let newsData = try decoder.decode(News.self, from: data)
+                    completion(newsData, HTTPResponse, nil)
+                } catch let error as NSError {
                     completion(nil, HTTPResponse, error)
                 }
-            } else {
-                switch HTTPResponse.statusCode {
-                case 200:
-                    do {
-                        let newsData = try decoder.decode(News.self, from: data!)
-                        completion(newsData, HTTPResponse, nil)
-                    } catch let error as NSError {
-                        completion(nil, HTTPResponse, error)
-                    }
-                default:
-                    print("default")
-                }
+            default:
+                print("default")
             }
         }
         return dataTask
@@ -55,16 +47,15 @@ extension APIManager {
     
     func FetchNews<News>(request: URLRequest, completion: @escaping (APIResult<News>) -> Void) {
         let dataTask = JSONTaskWith(request: request) { newsData, response, error in
-            //проверка на наличие данных
             guard let newsData = newsData else {
                 if let error = error {
-                    completion(.Failure(error))
+                    completion(.failure(error))
                 }
                 return
             }
-            //проверка на преобразование в тип News
+            
             if let newsData = newsData as? News {
-                completion(.Success(newsData))
+                completion(.success(newsData))
             }
         }
         dataTask.resume()

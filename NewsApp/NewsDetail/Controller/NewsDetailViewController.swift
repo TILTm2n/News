@@ -16,6 +16,7 @@ class NewsDetailViewController: UIViewController {
     var contentLabel = ContentLabel()
     var linkTextView = LinkTextView()
     var attributedLabel = UILabel()
+    
     let myActivityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
     
     init(article: Article) {
@@ -30,19 +31,24 @@ class NewsDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         newsImage.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
-        linkTextView = LinkTextView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
+        newsImage.addSubview(myActivityIndicator)
+        
         myActivityIndicator.frame = CGRect(x: newsImage.frame.size.width/2, y: newsImage.frame.size.height/2, width: 100, height: 100)
+        myActivityIndicator.color = .blue
+        myActivityIndicator.startAnimating()
+        myActivityIndicator.hidesWhenStopped = true
+        
+        linkTextView = LinkTextView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
         linkTextView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.backgroundColor = .white
         view.addSubview(newsImage)
         view.addSubview(titleLabel)
         view.addSubview(authorLabel)
         view.addSubview(contentLabel)
         view.addSubview(linkTextView)
-        newsImage.addSubview(myActivityIndicator)
-        myActivityIndicator.color = .blue
-        myActivityIndicator.startAnimating()
-        myActivityIndicator.hidesWhenStopped = true
+        
+        
         updateUI()
         createLink()
         setConstraints()
@@ -53,8 +59,10 @@ class NewsDetailViewController: UIViewController {
         let string = "A link to Post"
         let attributedLinkString = NSMutableAttributedString(string: string, attributes:[NSAttributedString.Key.link: URL(string: "\(article.url)")!])
         let fullAttributedString = NSMutableAttributedString()
+        
         fullAttributedString.append(plainAttributedString)
         fullAttributedString.append(attributedLinkString)
+        
         attributedLabel.isUserInteractionEnabled = true
         attributedLabel.attributedText = fullAttributedString
         linkTextView.attributedText = fullAttributedString
@@ -122,4 +130,5 @@ class NewsDetailViewController: UIViewController {
             myActivityIndicator.centerYAnchor.constraint(equalTo: newsImage.centerYAnchor),
         ])
     }
+    
 }

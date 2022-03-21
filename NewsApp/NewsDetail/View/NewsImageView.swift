@@ -35,4 +35,5 @@ class NewsImageView: UIImageView {
         }
         return CGSize(width: -1.0, height: -1.0)
     }
+    
 }

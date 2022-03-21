@@ -12,8 +12,8 @@ class AuthorLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
         numberOfLines = 0
-        font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         translatesAutoresizingMaskIntoConstraints = false
+        font = UIFont.systemFont(ofSize: 20, weight: .semibold)
     }
     
     required init?(coder: NSCoder) {
@@ -23,4 +23,5 @@ class AuthorLabel: UILabel {
     func setAuthor(with author: String) {
         text = author
     }
+    
 }

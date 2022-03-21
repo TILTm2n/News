@@ -18,7 +18,6 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
     var state: State = .active
     var articles = [Article]()
     var newsTableView = NewsTableView()
-    lazy var NewsManager = APINewsManager(key: "00918c3d3188418eb025b1318a41d30c", page: pageNumber)
     
     let flag: UIView = {
         let view = UIView()
@@ -26,12 +25,12 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         return view
     }()
     
+    lazy var NewsManager = APINewsManager(page: pageNumber)
     lazy var refreshControl : UIRefreshControl = {
         var refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor.red
         return refreshControl
     }()
-    
     lazy var spinner : UIActivityIndicatorView = {
         var spinner = UIActivityIndicatorView(style: .medium)
         spinner.frame = CGRect(x: 0, y: 0, width: 320, height: 44)
@@ -43,8 +42,10 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.backgroundColor = .yellow
         view.addSubview(newsTableView)
         view.addSubview(flag)
+        
         newsTableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(reloadAllDataByRefresh), for: .primaryActionTriggered)
+        
         getFreshNews()
         configureNewsTable()
     }
@@ -62,7 +63,9 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
     func configureNewsTable() {
         newsTableView.delegate = self
         newsTableView.dataSource = self
+        
         view.addSubview(newsTableView)
+        
         NSLayoutConstraint.activate([
             newsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             newsTableView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor),
@@ -91,8 +94,7 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         NewsManager.FetchFreshNews { result in
             self.toggleActivityIndicator(on: false)
             switch result {
-            case .Success(let news):
-                //self.articles = news.articles
+            case .success(let news):
                 self.articles.append(contentsOf: news.articles)
                 DispatchQueue.main.async {
                     self.newsTableView.reloadData()
@@ -104,7 +106,7 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
                         self.pageNumber += 1
                     }
                 }
-            case.Failure(let error as NSError):
+            case.failure(let error as NSError):
                 DispatchQueue.main.async {
                     let alertController = UIAlertController(title: "Unable to get data", message: "\(error.localizedDescription)", preferredStyle: .alert)
                     let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -115,6 +117,7 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
     }
+    
 }
 
 extension NewsViewController {
@@ -134,7 +137,6 @@ extension NewsViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsTableViewCell.identifier, for: indexPath) as! NewsTableViewCell
         cell.configureCell(with: articles[indexPath.row].title ?? "no data", amount: indexPath.row )
-//        print("\(indexPath.row) ----> \(articles[indexPath.row].title ?? "")")
         return cell
     }
     
@@ -144,4 +146,5 @@ extension NewsViewController {
         vc.modalPresentationStyle = .pageSheet
         self.present(vc, animated: true, completion: nil)
     }
+    
 }
